@@ -1,0 +1,41 @@
+.listWrapper {
+  max-width: 1200px;
+  width: 100%;
+  margin: 30px auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.contactUl {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.contactLi {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  flex: 1 1 280px;
+  max-width: 350px;
+  box-sizing: border-box;
+}
+
+.contactLi:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}

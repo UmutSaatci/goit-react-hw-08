@@ -1,0 +1,52 @@
+.contactItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contactInfo p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.contactInfo span {
+  display: flex;
+  align-items: center;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.deleteBtn {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #ef4444;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease-in-out,
+    transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.deleteBtn:hover {
+  background-color: #dc2626;
+}
+
+.deleteBtn:active {
+  transform: scale(0.96);
+}
