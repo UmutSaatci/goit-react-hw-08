@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.welcomeText {
+  margin: 0;
+  color: #4a5568;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.username {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.logoutButton {
+  background-color: #ffeeee;
+  color: #dc3545;
+  border: 1px solid #f8d7da;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.logoutButton:hover {
+  background-color: #dc3545;
+  color: #ffffff;
+  border-color: #dc3545;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}
+
+.logoutButton:active {
+  transform: scale(0.98);
+}

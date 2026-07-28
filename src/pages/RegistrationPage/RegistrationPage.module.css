@@ -1,0 +1,75 @@
+css.pageContainer {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.title {
+  margin-bottom: 20px;
+  justify-content: center;
+  font-size: 34px;
+  color: #051a30;
+}
+
+.formContainer {
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+  font-weight: 500;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.submitButton {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+.submitButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.apiError {
+  color: #dc3545;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}

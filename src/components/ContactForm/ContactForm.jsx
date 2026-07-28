@@ -1,12 +1,17 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import css from "./ContactForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import toast from "react-hot-toast";
 
-import { addContacts } from "../../redux/operations";
+import { addContacts } from "../../redux/contacts/operations";
+// Rehberdeki mevcut kişileri seçmek için kullandığınız selector
+import { selectContacts } from "../../redux/contacts/selectors";
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
+  // 1. Redux state içindeki mevcut tüm kişileri çekiyoruz
+  const contacts = useSelector(selectContacts);
 
   const FeedbackSchema = Yup.object().shape({
     name: Yup.string()
@@ -18,21 +23,43 @@ export const ContactForm = () => {
       .max(50, "Too Long!")
       .required("Telefon alanı zorunludur!"),
   });
+
   const initialValues = {
     name: "",
     number: "",
   };
 
   const handleSubmit = (values, actions) => {
-    // values nesnesinin içinden name ve number değerlerini çıkartıyoruz
     const { name, number } = values;
 
-    // Daha önce düzeltmiş olduğumuz tek nesne alan operasyonu tetikliyoruz
-    dispatch(addContacts({ name, number }));
+    // 2. Mükerrer Kayıt Kontrolü: İsim ve numara birebir eşleşiyor mu?
+    // (Küçük/büyük harf duyarlılığını kaldırmak ve boşlukları temizlemek için trim ve toLowerCase kullanıyoruz)
+    const isDuplicate = contacts.some(
+      (contact) =>
+        contact.name.trim().toLowerCase() === name.trim().toLowerCase() &&
+        contact.number.trim() === number.trim(),
+    );
 
-    // Formu sıfırlamak için (Formik kuralı)
-    actions.resetForm();
+    // 3. Eğer aynı isim ve numara varsa kaydetme ve hata toast'u fırlat
+    if (isDuplicate) {
+      toast.error(
+        `"${name}" ismi ve "${number}" numarası rehberde zaten kayıtlı!`,
+      );
+      return; // Fonksiyonu burada kes, dispatch işlemine geçme
+    }
+
+    // 4. Eşleşme yoksa asenkron ekleme operasyonunu güvenle tetikle
+    dispatch(addContacts({ name, number }))
+      .unwrap()
+      .then(() => {
+        toast.success(`${name} başarıyla rehbere eklendi!`);
+        actions.resetForm();
+      })
+      .catch(() => {
+        toast.error("Kişi eklenirken bir hata meydana geldi.");
+      });
   };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -42,7 +69,7 @@ export const ContactForm = () => {
       <Form className={css.formContainer}>
         <div className={css.inputGroup}>
           <label htmlFor="name-input" className={css.formLabel}>
-            Name
+            İsim
           </label>
           <Field
             type="text"
@@ -59,7 +86,7 @@ export const ContactForm = () => {
 
         <div className={css.inputGroup}>
           <label htmlFor="number-input" className={css.formLabel}>
-            Number
+            Telefon
           </label>
           <Field
             type="text"
@@ -75,7 +102,7 @@ export const ContactForm = () => {
         </div>
 
         <button type="submit" className={css.submitBtn}>
-          Submit
+          Kişi Ekle
         </button>
       </Form>
     </Formik>

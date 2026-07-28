@@ -1,16 +1,12 @@
 import { useSelector } from "react-redux";
-// Sadece ihtiyacımız olan seçicileri import ediyoruz
-import {
-  selectFilteredContacts,
-  selectIsLoading,
-  selectError,
-} from "../../redux/selectors"; // selectors.js dosyanızın yolu
+import { selectIsLoading, selectError } from "../../redux/contacts/selectors";
+import { selectFilteredContacts } from "../../redux/filters/selectors";
 
 import css from "./ContactList.module.css";
 import { Contact } from "../Contact/Contact";
 
 export const ContactList = () => {
-  // ÖDEVDE İSTENEN: createSelector ile oluşturulan seçiciyi doğrudan useSelector içinde çağırıyoruz
+  // createSelector ile oluşturulan seçiciyi doğrudan useSelector içinde çağırıyoruz
   const filteredContacts = useSelector(selectFilteredContacts);
 
   // Arayüzde yükleniyor ve hata mesajlarını göstermek için durumları çekiyoruz

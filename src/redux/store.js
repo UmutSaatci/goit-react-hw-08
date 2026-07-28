@@ -1,12 +1,44 @@
 import { configureStore } from "@reduxjs/toolkit";
-import contactsReducer from "./contactsSlice"; // contacts slice dosyanızın yolu
-import filtersReducer from "./filtersSlice"; // YENİ EKLEDİĞİMİZ: filters slice dosyanızın yolu
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+
+const customStorage = {
+  getItem: (key) => Promise.resolve(localStorage.getItem(key)),
+  setItem: (key, value) => Promise.resolve(localStorage.setItem(key, value)),
+  removeItem: (key) => Promise.resolve(localStorage.removeItem(key)),
+};
+
+import contactsReducer from "./contacts/slice";
+import filtersReducer from "./filters/slice";
+import authSliceReducer from "./auth/slice";
+
+// Redux Persist Yapılandırması
+const authPersistConfig = {
+  key: "auth",
+  storage: customStorage,
+  whitelist: ["token"],
+};
 
 export const store = configureStore({
   reducer: {
-    // Sol taraftaki isimler (contacts ve filters) selectors.js dosyasında
-    // state.contacts ve state.filters olarak çağırdığımız isimlerdir.
     contacts: contactsReducer,
-    filters: filtersReducer, // filtersSlice bu satır ile store'a bağlandı!
+    filters: filtersReducer,
+    auth: persistReducer(authPersistConfig, authSliceReducer),
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
+
+export const persistor = persistStore(store);

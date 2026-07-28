@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchContacts, addContacts, deleteContacts } from "./operations";
+import {
+  fetchContacts,
+  addContacts,
+  deleteContacts,
+  updateContact,
+} from "./operations";
+import { logoutUser } from "../auth/operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -24,7 +30,6 @@ const contactsSlice = createSlice({
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        // action.payload'ın doğrudan API'den gelen dizi ([{id, name, number}, ...]) olduğundan emin olun
         state.items = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchContacts.rejected, handleRejected)
@@ -52,7 +57,30 @@ const contactsSlice = createSlice({
             : action.payload;
         state.items = state.items.filter((item) => item.id !== deletedId);
       })
-      .addCase(deleteContacts.rejected, handleRejected);
+      .addCase(deleteContacts.rejected, handleRejected)
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.items = [];
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(updateContact.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        // Güncellenen kişiyi listede bul ve yerine yeni gelen veriyi koy
+        const index = state.items.findIndex(
+          (item) => item.id === action.payload.id,
+        );
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      })
+      .addCase(updateContact.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 

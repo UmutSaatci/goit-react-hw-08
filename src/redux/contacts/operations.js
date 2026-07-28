@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-axios.defaults.baseURL = "https://6a5b69bb64f700df5bd6eb3e.mockapi.io/";
+axios.defaults.baseURL = "https://connections-api.goit.global/";
 
 export const fetchContacts = createAsyncThunk(
   "contacts/fetchAll",
@@ -15,17 +15,27 @@ export const fetchContacts = createAsyncThunk(
   },
 );
 
-// 🛠️ DÜZELTME: Tek bir nesne (contactData) alıyoruz ve içinden name ile number'ı parçalıyoruz (destructuring)
 export const addContacts = createAsyncThunk(
   "contacts/addContacts",
   async ({ name, number }, thunkAPI) => {
     try {
-      // 🛠️ DÜZELTME: API'ye 'text' değil, rehber standardı olan 'name' gönderiyoruz
       const response = await axios.post("contacts", { name, number });
       return response.data;
     } catch (error) {
-      // Artık thunkAPI doğru konumda olduğu için burası sorunsuz çalışacaktır!
       return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);
+export const updateContact = createAsyncThunk(
+  "contacts/updateContact",
+  async ({ id, name, number }, thunkAPI) => {
+    try {
+      const response = await axios.patch(`contacts/${id}`, { name, number });
+      return response.data; // Sunucudan güncellenmiş yeni obje döner: { id, name, number }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message,
+      );
     }
   },
 );

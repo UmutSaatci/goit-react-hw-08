@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import css from "./SearchBox.module.css";
-import { setContactsFilter } from "../../redux/filtersSlice";
-import { selectFilterName } from "../../redux/selectors";
+import { setContactsFilter } from "../../redux/filters/slice";
+import { selectFilterName } from "../../redux/filters/selectors";
 
 export const SearchBox = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ export const SearchBox = () => {
 
   return (
     <div className={css.searchWrapper}>
-      <p className={css.label}>Find contacts by name</p>
+      <p className={css.label}>İsim ya da numara arayın</p>
       <input
         type="text"
         className={css.searchInput}
